@@ -12,5 +12,8 @@ export interface Chat{
 }
 
 interface Message{
+    from:User,
+    readed:boolean,
     body:string,
+    date:Date,
 }

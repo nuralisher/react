@@ -1,12 +1,5 @@
 import {User} from './interfaces'
 
-let user = {
-    id:'3',
-    name:'user',
-    email:'a@mail.com',
-    password:'password',
-    chats:[],
-}
 
 export let users:User[] = [
     {
@@ -14,9 +7,7 @@ export let users:User[] = [
         name:'Alisher',
         email:'alisher@mail.com',
         password:'password',
-        chats:[
-            {with:user, messages:[{body:"salem"}]}
-        ],
+        chats:[],
     },
     {
         id:'2',

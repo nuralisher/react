@@ -1,0 +1,12 @@
+.field {
+    display: flex;
+    width: 200px;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    padding: 0 10px;
+}
+
+.field input {
+    width: 100px;
+}

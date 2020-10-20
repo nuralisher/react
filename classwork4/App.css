@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.bar {
+  display: flex;
+  width: 100%;
+  height: 10vh;
+  background-color: rgb(78, 133, 155);
+  color: white;
+}
+
+.bar ul {
+  display: flex;
+  flex: 1 0 auto;
+  padding: 0;
+  justify-content: space-around;
+  align-items: center;
+  list-style: none;
+}
+
+.bar a {
+  text-decoration: none;
+}
+
+.bar a:visited {
+  color: white;
+}

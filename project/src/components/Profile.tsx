@@ -1,27 +1,23 @@
-import React, { ReactElement, useEffect, useRef , useState} from 'react'
-import { BrowserRouter, Link, Redirect, useRouteMatch } from 'react-router-dom'
-import { User } from '../local/interfaces';
-import { users } from '../local/localdb';
-import { ValidationStatus } from '../local/validationStatus'
+import React, { ReactElement, useContext,} from 'react'
+import { Redirect,  } from 'react-router-dom'
+import {CurrentUser} from '../App';
 
 interface Props {
-    authUser?:ValidationStatus,
-    user?:User,
+
 }
 
-export default function Profile({authUser, user}: Props): ReactElement {
+export default function Profile({}: Props): ReactElement {
+    const curUser = useContext(CurrentUser);
 
     return (
-        <div>
-            {(authUser === ValidationStatus.VALID || user?.id) &&
-            <div>logged {user?.name}</div>
-            }
-
-            {authUser === ValidationStatus.NOTVALID &&
+        <>
+            {curUser.id?
+            <div>logged {curUser.name}</div>
+            :
             <div>
                 <Redirect to='/login'/>
             </div>
             }
-        </div>
+        </>
     )
 }

@@ -13,15 +13,18 @@ import Chats from './components/Chats';
 import Users from './components/Users';
 import Groups from './components/Groups';
 
+
+export const CurrentUser = React.createContext<User>({
+  id:"", name:"", email:"",password:""
+});
+
+
 function App() {
   const [isLogged, setisLogged] = useState(false);
   const [authUser, setauthUser] = useState(ValidationStatus.UNDEFINED);
   const [regUser, setregUser] = useState(ValidationStatus.UNDEFINED);
   const [curUser, setcurUser] = useState({id:"", name:"", email:"",password:""});
 
-  useEffect(() => {
-    console.log(`usefect:=> userID: ${curUser.id} , islogged ${isLogged} , authuser: ${authUser}`);
-}, )
 
 
   return (
@@ -34,18 +37,18 @@ function App() {
       <Switch>
         <Route exact path='/registration' component={()=><Registration registrate={registrate} cancel={cancel}  regUser={regUser}/>}/>
         <Route exact path='/login' component={()=><Auth login={login} cancel={cancel} regUser={regUser} authUser={authUser}/>} />
-        <Route  path='/profile' component={()=> <Profile authUser={authUser}/>} />
+        <Route  path='/profile' component={Profile} />
       </Switch></>
       :
-      <>
-      <Sidebar logout={logout} />
-      <Switch>
-        <Route  path='/profile' component={()=> <Profile  user={curUser}/>}/>
-        <Route path='/chats' component={()=> <Chats user={curUser} />}/>
-        <Route path='/users' component={Users} />
-        <Route path='/groups' component={Groups} />
-      </Switch>
-      </>
+      <CurrentUser.Provider value={curUser}>
+        <Sidebar logout={logout} />
+        <Switch>
+          <Route  path='/profile' component={Profile}/>
+          <Route path='/chats' component={Chats}/>
+          <Route path='/users' component={Users} />
+          <Route path='/groups' component={Groups} />
+        </Switch>
+      </CurrentUser.Provider>
       }
     </BrowserRouter>
   );

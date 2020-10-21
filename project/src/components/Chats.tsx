@@ -1,20 +1,20 @@
-import React, { ReactElement, useEffect, useState } from 'react'
-import { Link, useRouteMatch } from 'react-router-dom'
-import { Chat, User } from '../local/interfaces'
+import React, { ReactElement, useContext, useEffect, useState } from 'react'
+import { CurrentUser } from '../App'
+import { Chat } from '../local/interfaces'
 import { users } from '../local/localdb'
 import ChatItem from './ChatItem'
 
 
 interface Props {
-    user:User,
+
 }
 
-export default function Chats({user,}: Props): ReactElement {
+export default function Chats({}: Props): ReactElement {
     const defaultUser = {id:"", name:"", email:"",password:""};
+    const user = useContext(CurrentUser);
     const [chats, setChats] = useState<Chat[]>([]);
     const [selectedChat, setSelectedChat] = useState<Chat>({with:defaultUser, messages:[]});
     const [refresh, setRefresh] = useState(true);
-    let match = useRouteMatch();
 
     useEffect(() => {
         console.log('RENDER CHATS')
@@ -105,8 +105,8 @@ export default function Chats({user,}: Props): ReactElement {
 
 
         setSelectedChat((prev)=>(prev=currentChat || {messages:[]} ));
-        setRefresh((p)=>(p=!p));
         sort();
+        setRefresh((p)=>(p=!p));
 
         console.log(`sended22: ${receiverChat?.messages.length}, ${receiverChat?.with?.name}`)
     }

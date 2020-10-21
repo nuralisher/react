@@ -1,4 +1,4 @@
-import {User} from './interfaces'
+import {Group, User} from './interfaces'
 
 
 export let users:User[] = [
@@ -16,4 +16,8 @@ export let users:User[] = [
         password:'password',
         chats:[],
     }
+]
+
+export let groups:Group[] = [
+    
 ]

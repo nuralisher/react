@@ -10,9 +10,6 @@ interface Props {
 }
 
 export default function Profile({authUser, user}: Props): ReactElement {
-    const [state, setstate] = useState(false);
-
-    
 
     return (
         <div>

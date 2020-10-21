@@ -3,8 +3,6 @@ import { Link, useRouteMatch } from 'react-router-dom'
 import { Chat, User } from '../local/interfaces'
 import { users } from '../local/localdb'
 import ChatItem from './ChatItem'
-import MessageItem from './MessageItem'
-import Messages from './Messages'
 
 
 interface Props {
@@ -42,14 +40,14 @@ export default function Chats({user,}: Props): ReactElement {
             <>
             <h3>Chats</h3>
             <div>
-                {chats.map((chat)=>((
+                {chats.map((chat)=>(
                 <div onClick={()=>selectChat(chat)} >
                     <div> {chat.with?.name}: </div>
                     <div className={chat.messages[chat.messages.length-1].readed?"readed": "new"}> 
                         <span>{chat.messages[chat.messages.length-1].from.name}:</span> {chat.messages[chat.messages.length-1].body} 
                     </div>
                 </div>
-                )))}
+                ))}
             </div>
             </>
             :

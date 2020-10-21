@@ -17,3 +17,7 @@ interface Message{
     body:string,
     date:Date,
 }
+
+export interface Group{
+    name:string,
+}

@@ -1,4 +1,4 @@
-import React, { Component, ComponentType } from "react";
+import React, { Component, ComponentType, } from "react";
 
 interface Props {
   lists?: any[];
@@ -8,7 +8,9 @@ interface State {
 }
 
 const withObjectList = (props:Props)=>(WrappedComponent: ComponentType<State>)=>{
+
     class withObjectList extends Component<Props, State>{
+
         constructor() {
           super(props);
           this.state = {
@@ -18,8 +20,8 @@ const withObjectList = (props:Props)=>(WrappedComponent: ComponentType<State>)=>
 
 
         getList(){
-            const lists = props.lists || [];
-            this.setState({results:lists})
+          const lists = props.lists || [];
+          this.setState({results:lists})
         }
 
         componentDidMount(){

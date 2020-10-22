@@ -23,4 +23,4 @@ function Users({ results,}: Props): ReactElement {
         );
   }
 
-export default withObjectList({lists:users})(Users);
+export default withObjectList({lists:users,})(Users);

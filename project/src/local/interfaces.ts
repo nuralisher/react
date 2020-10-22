@@ -4,6 +4,7 @@ export interface User{
     email:string,
     password:string,
     chats?:Chat[],
+    groups?:Group[],
 }
 
 export interface Chat{
@@ -19,5 +20,13 @@ interface Message{
 }
 
 export interface Group{
+    admin:User,
+    id:string,
     name:string,
+    posts:Post[],
+    users:User[],
+}
+
+export interface Post{
+    body:string[],
 }

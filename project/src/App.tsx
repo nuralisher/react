@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import { BrowserRouter, Route, Switch,} from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch, useRouteMatch,} from 'react-router-dom';
 import Main from './components/Main';
 import Registration from './components/Registration';
 import Auth from './components/Auth';
-import { User } from './local/interfaces';
-import { users } from './local/localdb';
+import { Group, User } from './local/interfaces';
+import { groups, users } from './local/localdb';
 import Profile from './components/Profile';
 import { ValidationStatus } from './local/validationStatus';
 import Sidebar from './components/Sidebar';
 import Chats from './components/Chats';
 import Users from './components/Users';
 import Groups from './components/Groups';
+import GroupCreate from './components/GroupCreate';
+import GroupItem from './components/GroupItem';
+import PostCreate from './components/PostCreate';
+import SubscibedGroups from './components/SubscibedGroups';
 
 
 export const CurrentUser = React.createContext<User>({
@@ -24,6 +28,7 @@ function App() {
   const [authUser, setauthUser] = useState(ValidationStatus.UNDEFINED);
   const [regUser, setregUser] = useState(ValidationStatus.UNDEFINED);
   const [curUser, setcurUser] = useState({id:"", name:"", email:"",password:""});
+  const [createdId, setCreatedId] = useState("initial");
 
 
 
@@ -43,13 +48,30 @@ function App() {
       <CurrentUser.Provider value={curUser}>
         <Sidebar logout={logout} />
         <Switch>
-          <Route  path='/profile' component={Profile}/>
+          <Route path='/profile' component={Profile}/>
           <Route path='/chats' component={Chats}/>
           <Route path='/users' component={Users} />
-          <Route path='/groups' component={Groups} />
+          <Route exact path='/groups' component={Groups} />
+          <Route exact path='/groups/createNew' component={()=>
+                <GroupCreate create={createGroup} createdId={createdId} cancel={cancelCreateGroup}
+            />} />
+          
+          <Route exact path='/groups/subscribed' component={SubscibedGroups} />
+          <Route path='/groups/:id' component={GroupItem} />
         </Switch>
       </CurrentUser.Provider>
+
+      
       }
+
+      {
+        createdId!='initial' && (
+            !createdId?
+            <Redirect to='/groups/createNew' />
+            :
+            <Redirect to={`/groups/${createdId}`} />
+      )}
+
     </BrowserRouter>
   );
   
@@ -68,8 +90,8 @@ function App() {
       }
       newUser.id = (users.length + 1).toString();
       newUser.chats = [];
+      newUser.groups = [];
       users.push(newUser);
-      alert(users.length);
       setregUser((prev)=>(prev=ValidationStatus.VALID));
       return
     }
@@ -77,7 +99,6 @@ function App() {
   }
   
   function login(user:User){
-    console.log('login function');
     if(isValid(user)){
       const isExist = users.find( (u)=> u.email===user.email && u.password===user.password)
       if(isExist){
@@ -109,6 +130,26 @@ function App() {
     setauthUser((prev)=>(prev=ValidationStatus.UNDEFINED));
     setcurUser((prev)=>(prev={id:"", name:"", email:"",password:""}));
     setregUser((prev)=>(prev=ValidationStatus.UNDEFINED));
+  }
+
+
+  function createGroup(newGroup:Group){
+    if(isValidGroup(newGroup)){
+        newGroup.id = (groups.length+1).toString();
+        newGroup.admin = curUser;
+        console.log('ADMIN'+newGroup.admin.name);
+        groups.push(newGroup);
+    }
+    
+    setCreatedId((prev)=>(prev=newGroup.id));
+  }
+
+  function isValidGroup(group:Group):boolean{
+      return group.name.trim()? true : false;
+  }
+
+  function cancelCreateGroup(){
+      setCreatedId((prev)=>(prev='initial'));
   }
 
 }

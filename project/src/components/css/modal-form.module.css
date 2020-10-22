@@ -41,9 +41,22 @@
     transition: width linear .2s;
 }
 
+
+.form>textarea{
+    width: 100%;
+    display: block;
+    margin: auto;
+    margin-bottom: 1.5em;
+    font-size: 1.2rem;
+    padding: .2em;
+    border-radius: .2em;
+    transition: width linear .2s;
+}
+
 .form>input:focus{
     width: 16em;
 }
+
 
 .buttons{
     display: flex;

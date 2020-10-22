@@ -12,6 +12,7 @@ export default function Sidebar({logout, }: Props): ReactElement {
             <NavLink to='/chats'>Chats</NavLink>
             <NavLink to='/groups'>Groups</NavLink>
             <NavLink to='/users'>Users</NavLink>
+            <NavLink to='/groups/subscribed'>subscribed groups</NavLink>
             <NavLink to='/' onClick={()=>logout()}>Log out</NavLink>
         </div>
     )

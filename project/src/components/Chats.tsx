@@ -104,7 +104,7 @@ export default function Chats({}: Props): ReactElement {
         console.log(`sended: ${receiver?.name} , ${message}, ${receiverChat}`);
 
 
-        setSelectedChat((prev)=>(prev=currentChat || {messages:[]} ));
+        setSelectedChat((prev)=>(prev=currentChat || prev ));
         sort();
         setRefresh((p)=>(p=!p));
 

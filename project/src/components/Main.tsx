@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 interface Props {
     
@@ -7,7 +7,7 @@ interface Props {
 
 export default function Main({}: Props): ReactElement {
     return (
-        <div>
+        <div> 
             Main page
             
             <div className="box">

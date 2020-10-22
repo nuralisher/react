@@ -8,6 +8,7 @@ export let users:User[] = [
         email:'alisher@mail.com',
         password:'password',
         chats:[],
+        groups:[],
     },
     {
         id:'2',
@@ -15,6 +16,7 @@ export let users:User[] = [
         email:'u@mail.com',
         password:'password',
         chats:[],
+        groups:[],
     }
 ]
 

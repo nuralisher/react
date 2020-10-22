@@ -1,0 +1,160 @@
+.chatItem{
+    height: 100%;
+    background-color: rgb(243, 236, 236);
+    padding-left: .1em;
+}
+
+.newChat{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding-bottom: 3em;
+}
+
+.header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1em .5em;
+    border-bottom: 1px solid var(--open-blue);
+    background-color: white;
+    width:100%
+}
+
+.header>div{
+    width:100%
+}
+
+.header>h3{
+    display: block;
+    font-size: 1rem;
+    font-weight: normal;
+    padding-right: .3em;
+}
+
+
+.input_email {
+    border: 0;
+    outline: 0;
+    font-size: 1rem;
+    width:100%;
+    height: 2em;
+    padding: 0;
+}
+
+.input_email:focus{
+    border-bottom: 1px solid var(--open-blue);
+}
+
+.form{
+    width:90%;
+    display: flex;
+}
+
+
+.input_message{
+    border: 0;
+    outline: 0;
+    font-size: 1rem;
+    width:100%;
+    height: 2em;
+    padding: 1.4em;
+    border-radius: 5px;
+}
+
+.input_message:focus{
+    border-bottom: 2px solid var(--back-blue);
+}
+
+.send{
+    cursor: pointer;
+    border: 3px solid var(--back-blue);
+    outline: none;
+    border-radius: 5px;
+    transition: all linear .1s;
+    font-weight: 900;
+}
+
+.send:hover{
+    color: var(--text-color);
+    background-color: var(--open-blue);
+}
+
+.chat{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding-bottom: 3em;
+}
+
+.header2{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 1em 2em;
+    border-bottom: 1px solid var(--open-blue);
+    background-color: white;
+    width:100%;
+    font-size: 1.2rem;
+    font-weight: 900;
+}
+/* 
+.header2>div{
+    width:100%
+} */
+
+.message_box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    width:100%;
+    padding: 2em;
+}
+
+.from_me{
+    background-color: #dddce6;
+    border-radius: 8px;
+    align-self: flex-end;
+    margin: .3em 0;
+    padding: .1em 1em;
+}
+
+.to_me{
+    background-color: white;
+    border-radius: 8px;
+    align-self: flex-start;
+    margin: .3em 0;
+    padding: .1em 1em;
+}
+
+.from{
+    font-size: 1.2rem;
+    font-weight: 900;
+    margin-right: 2em;
+}
+
+.from_me > .message_header> .from{
+    display: none;
+}
+
+.message_header{
+    display: flex;
+    align-items: center;
+    margin-bottom: .5em;
+}
+
+.date{
+    font-size: .9rem;
+    font-weight: 100;
+}
+
+.body{
+    padding-bottom: .3em;
+    font-size: 1.1rem;
+}

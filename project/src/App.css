@@ -1,3 +1,9 @@
+*{
+  box-sizing: border-box;
+  font-family: 'Ubuntu', sans-serif;
+  color: var(--back-blue);
+}
+
 .App {
   text-align: center;
 }
@@ -77,4 +83,14 @@
 
 .new{
   background-color: green;
+}
+
+
+
+.main{
+  display: flex;
+}
+
+h1,h2,h3,h4,h5,h6{
+  margin: 0;
 }

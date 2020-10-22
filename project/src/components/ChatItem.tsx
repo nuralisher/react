@@ -1,5 +1,7 @@
-import React, { ReactElement, useEffect, useRef, useState } from 'react'
+import React, { ReactElement, useContext, useEffect, useRef, useState } from 'react'
+import { CurrentUser } from '../App';
 import { Chat, User } from '../local/interfaces'
+import style from './css/chatItem.module.css'
 
 interface Props {
     chat:Chat,
@@ -9,6 +11,7 @@ interface Props {
 export default function ChatItem({chat, send}: Props): ReactElement {
     // let receiverEmail:string ="";
     // let message:string = "";
+    const curUser = useContext(CurrentUser);
     const [receiverEmail, setReceiverEmail] = useState("");
     const [message, setMessage] = useState("");
     const text = useRef<HTMLInputElement>(null);
@@ -26,27 +29,45 @@ export default function ChatItem({chat, send}: Props): ReactElement {
     },[chat])
 
     return (
-        <div>
+        <div className={style.chatItem} >
             {!chat.with?.id?
-            <div>
-                <h3>New Chat</h3>
-                <input value={receiverEmail} ref={email} type="email" placeholder='Email of receiver' onChange={(e)=>changeReceiver(e.target.value)} />
-                <input value={message} type="text" placeholder='Type message' onChange={(e)=>changeMessage(e.target.value)} />
-                <button onClick={()=>sendIt(receiverEmail, message)} >Send</button>
+            <div className={style.newChat} >
+                <div className={style.header} >
+                    <h3>Whom: </h3>
+                    <div className={style.input_email_box}>
+                        <input className={style.input_email}  value={receiverEmail} 
+                            ref={email} type="email" placeholder='Email of receiver' 
+                            onChange={(e)=>changeReceiver(e.target.value)} />
+                    </div>
+                </div>
+                <div className={style.form} >
+                    <input  className={style.input_message}  value={message} 
+                        type="text" placeholder='Type message' 
+                        onChange={(e)=>changeMessage(e.target.value)} />
+
+                    <button className={style.send} onClick={()=>sendIt(receiverEmail, message)} >Send</button>
+                </div>
             </div>
             :
-            <div> 
-                <h3>Chat with {chat.with.name}</h3>
-                <div>
+            <div className={style.chat} >
+                <div className={style.header2} >
+                    <div>{chat.with.name}</div>
+                </div>
+                <div  className={style.message_box} >
                     {chat.messages.map((message)=>(
-                        <div>
-                            <div>From: {message.from.name}</div>
-                            <div>{message.body} {message.date.toDateString()} </div>
+                        <div  className={message.from===curUser? style.from_me: style.to_me }  >
+                            <div className={style.message_header} >
+                                <div className={style.from} >{message.from.name}</div>
+                                <div className={style.date} > {message.date.toString().substring(4,24)} </div>
+                            </div>
+                            <div className={style.body} >{message.body}</div>
                         </div>
                     ))}
                 </div>
-                <input value={message} ref={text} type="text" placeholder='Type message' onChange={(e)=>changeMessage(e.target.value)} />
-                <button onClick={()=>sendIt(chat.with?.email||"", message)} >Send</button>
+                <div className={style.form} >
+                    <input className={style.input_message} value={message} ref={text} type="text" placeholder='Type message' onChange={(e)=>changeMessage(e.target.value)} />
+                    <button className={style.send}  onClick={()=>sendIt(chat.with?.email||"", message)} >Send</button>
+                </div>
              </div>
             }
         </div>

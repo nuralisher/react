@@ -11,8 +11,8 @@ export default function Main({}: Props): ReactElement {
             Main page
             
             <div className="box">
-                <Link to='/login'>Log in</Link>
-                <Link to='/registration'>Sign up</Link>
+                <Link className="link" to='/login'>Log in</Link>
+                <Link className="link" to='/registration'>Sign up</Link>
             </div>
         </div>
     )

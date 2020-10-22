@@ -1,0 +1,102 @@
+*{
+    --open-blue:#32548f;
+}
+
+.chat{
+    display: flex;
+    width: 100%;
+}
+
+.left{
+    width: 25%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.right{
+    width: 80%;
+}
+
+.chats{
+    padding: 0.4em 0 0;
+    overflow: hidden;
+    height: 100%;
+    background-color: white;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1.5em .5em 1em;
+    margin-bottom: .1em;
+    background-color: white;
+}
+
+.header>*{
+    display: block;
+    text-align: start;
+}
+
+
+.chatItem{
+    cursor: pointer;
+    transition: all linear .1s;
+}
+
+.chatItem:hover{
+    background-color: rgb(243, 236, 236);
+}
+
+.chatItem_inner{
+    padding: .3em .8em;
+    overflow: hidden;
+}
+
+.chatItem_with{
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: .2em;
+}
+
+.readed{
+    overflow: hidden;
+    font-weight: 300;
+    font-size: 1rem;
+}
+
+.new{
+    overflow: hidden;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.chatItem_from{
+    margin-right: .2em;
+    font-weight: normal;
+
+}
+
+.chatItem_body{
+    overflow: hidden;
+    max-width:100%
+}
+
+.header> button{
+    cursor: pointer;
+    border: 2px solid var(--back-blue);
+    outline: none;
+    border-radius: 3px;
+    transition: all linear .1s;
+}
+
+.header> button:hover{
+    color: var(--text-color);
+    background-color: var(--open-blue);
+}
+
+.no_chat{
+    padding: .3em .8em;
+
+}

@@ -30,7 +30,7 @@ export default function GroupItem({}: Props): ReactElement {
     }, [] )
 
     return (
-        <div>
+        <div  >
             <div>
                 {currentGroup.id}
             </div>

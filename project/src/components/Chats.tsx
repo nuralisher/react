@@ -3,7 +3,7 @@ import { CurrentUser } from '../App'
 import { Chat } from '../local/interfaces'
 import { users } from '../local/localdb'
 import ChatItem from './ChatItem'
-
+import style from './css/chat.module.css'
 
 interface Props {
 
@@ -32,28 +32,38 @@ export default function Chats({}: Props): ReactElement {
     }
 
     return (
-        <div>
-            <button onClick={()=>openNewChat()} >New Chat</button>
+        <div className={style.chat} >
+            <div className={style.left} >
+                <div className={style.header} >
+                    <h3>Chats</h3>
+                    <button onClick={()=>openNewChat()} >New Chat</button> 
+                </div>            
 
-            {
-            chats.length>0? 
-            <>
-            <h3>Chats</h3>
-            <div>
-                {chats.map((chat)=>(
-                <div onClick={()=>selectChat(chat)} >
-                    <div> {chat.with?.name}: </div>
-                    <div className={chat.messages[chat.messages.length-1].readed?"readed": "new"}> 
-                        <span>{chat.messages[chat.messages.length-1].from.name}:</span> {chat.messages[chat.messages.length-1].body} 
+                {
+                chats.length>0? 
+                <>
+                <div className={style.chats} >
+                    {chats.map((chat)=>(
+                    <div className={style.chatItem} onClick={()=>selectChat(chat)} >
+                        <div className={style.chatItem_inner} >                        
+                            <div className={style.chatItem_with} > {chat.with?.name} </div>
+                            <div className={chat.messages[chat.messages.length-1].readed?style.readed: style.new}> 
+                                <span className={style.chatItem_from} >{chat.messages[chat.messages.length-1].from.name}:</span>
+                                <span className={style.chatItem_body} > {chat.messages[chat.messages.length-1].body} </span>
+                            </div>
+                        </div>
+
                     </div>
+                    ))}
                 </div>
-                ))}
+                </>
+                :
+                <div className={style.no_chat} > You don't have any chat  <br/> Create new chat to type </div>
+                }
             </div>
-            </>
-            :
-            <div>Nochat</div>
-            }
+            <div className={style.right} >
             <ChatItem chat={selectedChat} send={sendMessage}/>
+            </div>
         </div>
     )
 
@@ -71,7 +81,6 @@ export default function Chats({}: Props): ReactElement {
         console.log(`SEND TO ${emailReceiver}`);
         let receiver = users.find((u)=>u.email===emailReceiver);
         if(!receiver){
-            console.log('no such user');
             return
         }
         let receiverChat = receiver?.chats?.find((chat)=>chat.with===user);
@@ -90,7 +99,6 @@ export default function Chats({}: Props): ReactElement {
         }
         
         let currentDate = new Date();
-        console.log('DATE: '+currentDate);
 
         if(receiver!=user){
             receiverChat?.messages.push({readed:false, from:user , body:message, date:currentDate});

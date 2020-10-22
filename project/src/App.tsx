@@ -46,6 +46,7 @@ function App() {
       </Switch></>
       :
       <CurrentUser.Provider value={curUser}>
+        <div className="main" >
         <Sidebar logout={logout} />
         <Switch>
           <Route path='/profile' component={Profile}/>
@@ -56,9 +57,10 @@ function App() {
                 <GroupCreate create={createGroup} createdId={createdId} cancel={cancelCreateGroup}
             />} />
           
-          <Route exact path='/groups/subscribed' component={SubscibedGroups} />
+          <Route exact path='/my-groups' component={SubscibedGroups} />
           <Route path='/groups/:id' component={GroupItem} />
         </Switch>
+        </div>
       </CurrentUser.Provider>
 
       

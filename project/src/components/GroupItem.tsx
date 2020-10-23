@@ -4,6 +4,8 @@ import { CurrentUser } from '../App';
 import { Group, Post } from '../local/interfaces';
 import { groups } from '../local/localdb';
 import PostCreate from './PostCreate';
+import style from './css/group.module.css'
+import groupImg from '../images/group.svg';
 
 interface Props {
     
@@ -29,51 +31,55 @@ export default function GroupItem({}: Props): ReactElement {
     }, [] )
 
     return (
-        <div  >
-            <div>
-                {currentGroup.id}
-            </div>
-            <div>
-                Admin: {currentGroup.admin.name}
-            </div>
-            <div>
-                {currentGroup.name}
-            </div>
-            <div>
-                Group Users {currentGroup.users.length}
-            </div>
-            <div>
-                CurrentUser groups length: {user.groups?.length}
-            </div>
-
-            {currentGroup.admin===user ?
-            <div>
-                <Link to={`${match.url}/createPost`} > <button>Create Post</button> </Link>
-            </div>
-            :
-            <div>
-                {subscribed?
-                <button onClick={()=>toggleSubscribe()} >Unsubscribe</button>
-                :
-                <button onClick={()=>toggleSubscribe()} >Subscribe</button>}
-            </div>
-            }
-
-            {currentGroup.posts.length>0 ?
-            <div>
-                Posts: length {currentGroup.posts.length}, 
-                <div>
-                    {currentGroup.posts.map((post)=>(
-                        <div>
-                        <h3>Post: </h3>    
-                        {post.body.map((line)=>( <> {line} <br/> </> ) ) }
-                        </div>
-                    ) ) }
+        <div className={style.main} >
+            <div className={style.left}>
+                <div className={style.left_inner}>
+                    <div><img src={groupImg} className={style.img} /></div>
+                    <div className={style.name}>
+                        {currentGroup.name}
+                    </div>
+                    <div className={style.info_box}>
+                        <div className={style.info} >ID: <span className={style.info_value}>{currentGroup.id}</span> </div>
+                        <div className={style.info} >Admin: <span className={style.info_value}>{currentGroup.admin.name}</span> </div>
+                        <div className={style.info} >Group Users  <span className={style.info_value}>{currentGroup.users.length}</span> </div>
+                    </div>
                 </div>
             </div>
-            :
-            <div>No posts </div>
-            }
+
+            <div className={style.right}>
+                <div className={style.posts_header}>
+                    <div className={style.posts_nuber}>
+                        Number of posts:{currentGroup.posts.length}
+                    </div>
+                    {currentGroup.admin===user ?
+                    <Link className={style.create_btn} to={`${match.url}/createPost`} >Create Post </Link>
+                    :
+                    <>
+                        {subscribed?
+                        <button className={style.subscribe} onClick={()=>toggleSubscribe()} >Unsubscribe</button>
+                        :
+                        <button className={style.subscribe} onClick={()=>toggleSubscribe()} >Subscribe</button>}
+                    </>
+                    }
+                </div>
+                {currentGroup.posts.length>0 ?
+                <div className={style.posts}>
+                        {currentGroup.posts.map((post)=>(
+                            <div>
+                                {post.body.map((line)=>( 
+                                <div className={style.post_item}> 
+                                    {line} <br/> 
+                                </div> 
+                                ) ) }
+                            </div>
+                        ) ) }
+                </div>
+                :
+                <div className={style.box} >
+                    <div  >No posts </div>
+                </div>
+                }
+            </div>
 
             
             

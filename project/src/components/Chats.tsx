@@ -17,7 +17,6 @@ export default function Chats({}: Props): ReactElement {
     const [refresh, setRefresh] = useState(true);
 
     useEffect(() => {
-        console.log('RENDER CHATS')
         let check = user.chats? user.chats : [];
         setChats((prev)=>(prev=check));
     }, )
@@ -78,7 +77,6 @@ export default function Chats({}: Props): ReactElement {
     }
 
     function sendMessage(emailReceiver:string, message:string){
-        console.log(`SEND TO ${emailReceiver}`);
         let receiver = users.find((u)=>u.email===emailReceiver);
         if(!receiver){
             return
@@ -106,16 +104,9 @@ export default function Chats({}: Props): ReactElement {
         }else{    
             receiverChat?.messages.push({readed:true, from:user, body:message, date:currentDate});
         }
-        
-        console.log('DATE'+currentDate);
-
-        console.log(`sended: ${receiver?.name} , ${message}, ${receiverChat}`);
-
 
         setSelectedChat((prev)=>(prev=currentChat || prev ));
         sort();
         setRefresh((p)=>(p=!p));
-
-        console.log(`sended22: ${receiverChat?.messages.length}, ${receiverChat?.with?.name}`)
     }
 }

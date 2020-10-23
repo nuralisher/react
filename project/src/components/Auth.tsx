@@ -19,7 +19,6 @@ export default function Auth({login, cancel, regUser, authUser}: Props): ReactEl
 
     useEffect(() => {
         email.current?.focus();
-        console.log(` authuser: ${authUser}`);
     }, [])
 
     return (
@@ -28,7 +27,7 @@ export default function Auth({login, cancel, regUser, authUser}: Props): ReactEl
             <div className={style.back}>
                 <div className={style.box}>
                         <h2>Log in</h2>
-                        {authUser===ValidationStatus.NOTVALID && <div className={style.warning}>Try Again{authUser} </div>}
+                        {authUser===ValidationStatus.NOTVALID && <div className={style.warning}>Try Again</div>}
                         <div className={style.form}>
                             <input type="email" ref={email} placeholder='Enter email' onChange={(e)=>{user.email=e.target.value}}/>
                             <input type="password" placeholder='Enter password' onChange={(e)=>{user.password=e.target.value}}/>

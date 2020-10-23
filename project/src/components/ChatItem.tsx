@@ -20,7 +20,6 @@ export default function ChatItem({chat, send}: Props): ReactElement {
     useEffect(() => {
         changeMessage("");
         changeReceiver("");
-        console.log('render');
         if(!chat.with?.id){
             email.current?.focus();
         }else{

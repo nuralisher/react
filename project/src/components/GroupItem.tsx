@@ -1,4 +1,3 @@
-import { group } from 'console';
 import React, { ReactElement, useContext, useEffect, useState } from 'react'
 import { Link, Route, useRouteMatch } from 'react-router-dom'
 import { CurrentUser } from '../App';
@@ -97,7 +96,6 @@ export default function GroupItem({}: Props): ReactElement {
         }
 
         setSubscribed((prev)=>(prev=!prev));
-        console.log('LENGTH:'+ user.groups?.length);
     }
 
     function addPost(post:Post){

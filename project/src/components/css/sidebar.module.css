@@ -8,7 +8,7 @@
     flex-direction: column;
     background-color: var(--back-blue);
     color: var(--text-color);
-    height: 100vh;
+    min-height: 100%;
     padding-top: 1em;
     min-width: 85px;
 }

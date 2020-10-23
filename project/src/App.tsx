@@ -14,7 +14,6 @@ import Users from './components/Users';
 import Groups from './components/Groups';
 import GroupCreate from './components/GroupCreate';
 import GroupItem from './components/GroupItem';
-import PostCreate from './components/PostCreate';
 import SubscibedGroups from './components/SubscibedGroups';
 
 
@@ -104,8 +103,7 @@ function App() {
     if(isValid(user)){
       const isExist = users.find( (u)=> u.email===user.email && u.password===user.password)
       if(isExist){
-        console.log(user.password)
-        console.log(`isexist name: ${isExist.name}`)
+
           setauthUser((prev)=>(prev=ValidationStatus.VALID));
           setisLogged((prev)=>(prev=true));
           setcurUser((prev)=>(prev=isExist))
@@ -120,7 +118,7 @@ function App() {
     user.password = user.password.trim();
   
     if(user.email && user.password && user.email.includes('@') && user.email.includes('.com') && user.password.length>=8){
-      console.log('valid');
+      
       return true;
     }
     return false;
@@ -139,7 +137,6 @@ function App() {
     if(isValidGroup(newGroup)){
         newGroup.id = (groups.length+1).toString();
         newGroup.admin = curUser;
-        console.log('ADMIN'+newGroup.admin.name);
         groups.push(newGroup);
     }
     

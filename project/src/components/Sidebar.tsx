@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import {  NavLink } from 'react-router-dom'
 import sidebar from './css/sidebar.module.css';
 import profileLogo from './../images/user.svg';
 import groupLogo from './../images/group.svg';

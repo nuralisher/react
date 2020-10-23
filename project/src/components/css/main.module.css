@@ -1,0 +1,120 @@
+.main{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header{
+    background-color: var(--back-blue);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 65px;
+    padding: 1em 1em;
+}
+
+.content{
+    display: flex;
+    height: 100%;
+}
+
+.left{
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.header>div{
+    color: white;
+}
+
+.header a{
+    display: block;
+    color: white;
+    text-decoration: none;
+    transition: all linear .2s;
+    padding: .3em .3em;
+    border-radius: 5px;
+}
+.header a:hover{
+    border: 1px solid white;
+}
+
+.right{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form{
+    padding: 10.1em 4em;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 1em;
+}
+
+.link{
+    display: block;
+    text-decoration: none;
+    border: 3px solid var(--back-blue);
+    border-radius: 1em;
+    padding: .8em 8em;
+    transition: all linear .1s;
+    font-size: 1.3rem;
+    font-weight: bold;
+    background-color: rgb(243, 236, 236);
+}
+
+.link:hover{
+    background-color: var(--back-blue);
+    color: white;
+}
+
+.form> *+*{
+    margin-top: 1em;
+}
+
+.form> div{
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.left_inner{
+    background-color: white;
+    padding: 7em 25em 7em 5em;
+    border-radius: 1em;
+    display: flex;
+    flex-direction: column;
+}
+
+.box{
+
+}
+
+.box>div{
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 1.2em;
+}
+
+.left_inner>ul>li{
+    font-size: 1.2rem;
+    margin: .8em 0;
+    font-weight: 900;
+}
+
+.about>*{
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.about>*+*{
+    font-size: 1rem;
+    font-weight: 400;
+}

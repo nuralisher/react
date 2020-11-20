@@ -17,6 +17,7 @@
 .content{
     display: flex;
     height: 100%;
+    margin: 0 1em;
 }
 
 .left{
@@ -25,7 +26,6 @@
     justify-content: center;
     align-items: center;
 }
-
 
 
 .header>div{
@@ -87,7 +87,7 @@
 
 .left_inner{
     background-color: white;
-    padding: 7em 25em 7em 5em;
+    padding: 8em 20em 7em 5em;
     border-radius: 1em;
     display: flex;
     flex-direction: column;

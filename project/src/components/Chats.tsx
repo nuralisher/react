@@ -77,8 +77,9 @@ export default function Chats({}: Props): ReactElement {
     }
 
     function sendMessage(emailReceiver:string, message:string){
+        message = message.trim();
         let receiver = users.find((u)=>u.email===emailReceiver);
-        if(!receiver){
+        if((!receiver) ||  (!message)){
             return
         }
         let receiverChat = receiver?.chats?.find((chat)=>chat.with===user);

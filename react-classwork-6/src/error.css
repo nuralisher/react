@@ -1,0 +1,32 @@
+.containe{
+    width: 1100px;
+    margin: 30px auto;
+}
+
+.errorImg{
+    width: 15em;
+    display: block;
+}
+
+.message{
+    font-size: 1.1rem;
+}
+
+.header{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.backBtn{
+    margin-top: 2em;
+    color: blue;
+    text-decoration: underline;
+}
+
+.ohps{
+    font-size: 1.6rem;
+    margin-left: 30px;
+    font-weight: bold;
+}

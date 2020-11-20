@@ -22,14 +22,14 @@ export default function Main({}: Props): ReactElement {
                                 <div>This is react project done by:</div>
                                 <ul>
                                     <li>Nurzhanuly Alisher</li>
-                                    <li>Davlatov Sabirzhan</li>
+                                    <li>Davlatov Sobirzhon</li>
                                     <li>Kamal Aruzhan</li>
                                 </ul>
                             </div>
                             <div className={style.about} >
-                                <div> Lorem, ipsum dolor. </div>
-                                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
-                                    Sunt ipsam laboriosam voluptate laudantium? Nemo cupiditate illum est veritatis molestiae dolores. 
+                                <div> This is new social network </div>
+                                <p>This is new social network, here you can send message to your friend 
+                                    And you can create your group, there you can post posts Nemo eritatis molestiae dolores. 
                                     Porro sed odit itaque quidem omnis voluptate asperiores quo pariatur.</p>
                             </div>
                         </div>

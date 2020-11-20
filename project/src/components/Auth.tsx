@@ -45,9 +45,5 @@ export default function Auth({login, cancel, regUser, authUser}: Props): ReactEl
             }
         </>
     )
-
-    // function auth(user:User){
-    //     user.id = login(user);
-    // }
 }
 

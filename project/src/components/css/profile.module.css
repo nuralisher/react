@@ -27,10 +27,14 @@
 
 .info{
     font-size:  1.2rem;
+    display: flex;
+    align-items: center;
+    margin-bottom: .3em;
 }
 
 .info_value{
     font-weight:  500;
+    margin-left: .3em;
 }
 
 .box_inner{
@@ -42,4 +46,68 @@
     background-color: rgb(243, 236, 236);
     border-radius: 100%;
     border: none;
+}
+
+.change, .save{
+    margin-top: .3em;
+    cursor: pointer;
+    border: 2px solid var(--back-blue);
+    outline: none;
+    border-radius: 5px;
+    transition: all linear .1s;
+    padding: .3em .5em;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.change:hover, .save:hover{
+    color: var(--text-color);
+    background-color: var(--open-blue);
+}
+
+.form{
+    margin-top: .5em;
+}
+
+.input_pass{
+    padding: .3em .3em;
+    font-size: 1rem;
+    margin-top: 1em;
+    border-radius: 5px;
+    transition: all linear .1s;
+    width: 220px;
+}
+.input_pass:focus{
+    width: 240px;
+}
+
+.warning{
+    color: red;
+}
+
+.btns{
+    margin-top: 1em;
+}
+
+.save{
+    margin-right: 7em;
+}
+
+.cancel{
+    margin-top: .3em;
+    cursor: pointer;
+    border: 2px solid var(--back-blue);
+    outline: none;
+    border-radius: 5px;
+    transition: all linear .1s;
+    padding: .3em .5em;
+    font-size: 1rem;
+    font-weight: 500;
+    background-color: var(--open-blue);
+    color: var(--text-color);
+}
+
+.cancel:hover{
+    color: var(--back-blue);
+    background-color: var(--text-color);
 }

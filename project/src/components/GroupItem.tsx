@@ -56,7 +56,7 @@ export default function GroupItem({}: Props): ReactElement {
                     :
                     <>
                         {subscribed?
-                        <button className={style.subscribe} onClick={()=>toggleSubscribe()} >Unsubscribe</button>
+                        <button className={style.unsubscribe} onClick={()=>toggleSubscribe()} >Unsubscribe</button>
                         :
                         <button className={style.subscribe} onClick={()=>toggleSubscribe()} >Subscribe</button>}
                     </>
@@ -106,7 +106,7 @@ export default function GroupItem({}: Props): ReactElement {
 
     function addPost(post:Post){
         if(post.body.length>0){
-            post.body.forEach((line)=>{line.trim()});
+            post.body.forEach((line)=>{line = line.trim()});
             post.body = post.body.filter((line )=>line!=='');
         
             if(post.body.length===0){

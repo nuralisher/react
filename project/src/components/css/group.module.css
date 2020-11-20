@@ -36,14 +36,16 @@
     font-weight: 500;
 }
 
-.create_btn,.subscribe{
+.create_btn,.subscribe, .unsubscribe{
     cursor: pointer;
     border: 2px solid var(--back-blue);
     outline: none;
     border-radius: 3px;
     transition: all linear .1s;
     text-decoration: none;
-    padding: .3em .3em;
+    padding: .3em 1em;
+    font-size: 1rem;
+    font-weight: 500;
 }
 
 .create_btn:hover{
@@ -51,7 +53,17 @@
     background-color: var(--open-blue);
 }
 
+.subscribe{
+    color: var(--text-color);
+    background-color: var(--open-blue);
+}
+
 .subscribe:hover{
+    color: var(--open-blue);
+    background-color: var(--text-color);
+}
+
+.unsubscribe:hover{
     color: var(--text-color);
     background-color: var(--open-blue);
 }
@@ -103,4 +115,12 @@
     align-self: flex-end;
     margin: 0 0;
     padding: .1em 1em;
+}
+
+.subscribe{
+
+}
+
+.unsubscribe{
+
 }

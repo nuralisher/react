@@ -10,6 +10,7 @@
     flex-direction: column;
     background-color: white;
     padding: 2em 1em;
+    margin-right: 1px;
 }
 
 .left_inner{
@@ -96,6 +97,13 @@
     align-items: end;
     width: 100%;
     height: 100%;
+    padding: 0 1em;
+}
+
+.box{
+    padding: 0 1em;
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
 .posts>*{
@@ -113,8 +121,8 @@
     background-color: #dddce6;
     border-radius: 8px;
     align-self: flex-end;
-    margin: 0 0;
-    padding: .1em 1em;
+    margin: .4em 0;
+    padding: 1em 1em;
 }
 
 .subscribe{
@@ -124,3 +132,7 @@
 .unsubscribe{
 
 }
+
+/* .disable{
+    disabled
+} */

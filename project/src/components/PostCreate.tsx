@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function PostCreate({create, cancelUrl, }: Props): ReactElement {
-    let newPost:Post = {body:[]};
+    let newPost:Post = {body:""};
     const textarea = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {
@@ -19,12 +19,12 @@ export default function PostCreate({create, cancelUrl, }: Props): ReactElement {
     return (
         <div className={style.back}>
             <div className={style.box} >
-                <h2>Creat New Group</h2>
+                <h2>Create New Post</h2>
                 <div className={style.form} >
-                    <textarea ref={textarea} placeholder='Name of Group' onChange={(e)=>newPost.body=e.target.value.split('\n') } />
+                    <textarea ref={textarea} placeholder='Write post' onChange={(e)=>newPost.body=e.target.value } />
                     <div className={style.buttons} >
-                        <Link to={cancelUrl} onClick={()=>create(newPost)} ><button className='btn btn-accept'>Create</button></Link>
-                        <Link to={cancelUrl}><button className='btn btn-reject'>Cancel</button></Link>
+                        <Link to={cancelUrl} onClick={()=>create(newPost)} ><button className={`${style.btn} ${style.btn_accept}`}>Create</button></Link>
+                        <Link to={cancelUrl}><button className={`${style.btn} ${style.btn_reject}`} >Cancel</button></Link>
                     </div>
                 </div>
             </div>

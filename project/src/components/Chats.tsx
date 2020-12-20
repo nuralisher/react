@@ -1,7 +1,9 @@
 import React, { ReactElement, useContext, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { CurrentUser } from '../App'
-import { Chat } from '../local/interfaces'
-import { users } from '../local/localdb'
+import { ActionType } from '../local/actionType'
+import { Chat, User } from '../local/interfaces'
+import { auth, users } from '../local/localdb'
 import ChatItem from './ChatItem'
 import style from './css/chat.module.css'
 
@@ -10,24 +12,27 @@ interface Props {
 }
 
 export default function Chats({}: Props): ReactElement {
-    const defaultUser = {id:"", name:"", email:"",password:""};
-    const user = useContext(CurrentUser);
-    const [chats, setChats] = useState<Chat[]>([]);
-    const [selectedChat, setSelectedChat] = useState<Chat>({with:defaultUser, messages:[]});
-    const [refresh, setRefresh] = useState(true);
+    // const [chats, setChats] = useState<Chat[]>([]);
+    // const [selectedChat, setSelectedChat] = useState<Chat>({with:defaultUser, messages:[]});
+    const rchats:Chat[] = useSelector((state:any)=>state.chatsReducer.chats);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        let check = user.chats? user.chats : [];
-        setChats((prev)=>(prev=check));
-    }, )
+        // let check = user.chats? user.chats : [];
+        // setChats((prev)=>(prev=check));
+        
+        sort();
+        dispatch({type:ActionType.SETCHATS, chats: auth.me?.chats});
+        dispatch({type:ActionType.SELECTCHAT, chat: null});
+    }, [])
+
 
     function sort(){
-        setChats((prev)=>(prev=
-            prev.sort((ch1, ch2)=>{
-                const lastMess1 = ch1.messages[ch1.messages.length-1];
-                const lastMess2 = ch2.messages[ch2.messages.length-1];
-                return (lastMess2.date.getTime() - lastMess1.date.getTime());
-            })));
+        auth.me?.chats?.sort((ch1, ch2)=>{
+            const lastMess1 = ch1.messages[ch1.messages.length-1];
+            const lastMess2 = ch2.messages[ch2.messages.length-1];
+            return (lastMess2.date.getTime() - lastMess1.date.getTime());
+        });
     }
 
     return (
@@ -39,10 +44,10 @@ export default function Chats({}: Props): ReactElement {
                 </div>            
 
                 {
-                chats.length>0? 
+                rchats?.length>0? 
                 <>
                 <div className={style.chats} >
-                    {chats.map((chat)=>(
+                    {rchats.map((chat)=>(
                     <div className={style.chatItem} onClick={()=>selectChat(chat)} >
                         <div className={style.chatItem_inner} >                        
                             <div className={style.chatItem_with} > {chat.with?.name} </div>
@@ -61,19 +66,21 @@ export default function Chats({}: Props): ReactElement {
                 }
             </div>
             <div className={style.right} >
-            <ChatItem chat={selectedChat} send={sendMessage}/>
+            <ChatItem send={sendMessage}/>
             </div>
         </div>
     )
 
     function openNewChat(){
-        setSelectedChat((prev)=>(prev={with: defaultUser, messages:[]}));
+        // setSelectedChat((prev)=>(prev={with: defaultUser, messages:[]}));
+        dispatch({type:ActionType.SELECTCHAT, chat:null});
     }
 
     function selectChat(chat:Chat){
-        setSelectedChat((prev)=>(prev=chat));
-        const findChat = chats.find((ch)=>ch.with===chat.with);
-        findChat?.messages.forEach(ch=>ch.readed=true);
+        // setSelectedChat((prev)=>(prev=chat));
+        dispatch({type:ActionType.SELECTCHAT, chat});
+        // const findChat = chats.find((ch)=>ch.with===chat.with);
+        // findChat?.messages.forEach(ch=>ch.readed=true);
     }
 
     function sendMessage(emailReceiver:string, message:string){
@@ -82,32 +89,39 @@ export default function Chats({}: Props): ReactElement {
         if((!receiver) ||  (!message)){
             return
         }
-        let receiverChat = receiver?.chats?.find((chat)=>chat.with===user);
         
-        if(!receiverChat){
-            receiver?.chats?.push({with:user, messages:[]});
-            receiverChat = receiver?.chats?.find((chat)=>chat.with===user);
-        }
-
-        
-        let currentChat = user.chats?.find((ch)=>ch.with===receiver);
+        let currentChat = auth.me.chats?.find((ch)=>ch.with?.id===receiver?.id);
 
         if(!currentChat){
-            user.chats?.push({with:receiver, messages:[]});
-            currentChat = user.chats?.find((ch)=>ch.with===receiver);
+            auth.me.chats?.push({with:receiver, messages:[]});
+            currentChat = auth.me.chats?.find((ch)=>ch.with===receiver);
+            dispatch({type:ActionType.SELECTCHAT, chat: currentChat});
         }
         
-        let currentDate = new Date();
 
-        if(receiver!=user){
-            receiverChat?.messages.push({readed:false, from:user , body:message, date:currentDate});
-            currentChat?.messages.push({readed:true, from:user, body:message, date:currentDate});
-        }else{    
-            receiverChat?.messages.push({readed:true, from:user, body:message, date:currentDate});
+        let receiverChat = receiver?.chats?.find((chat)=>chat.with?.id===auth.me.id);
+
+        if(!receiverChat){
+            receiver?.chats?.push({with:auth.me, messages:[]});
+            receiverChat = receiver?.chats?.find((chat)=>chat.with?.id===auth.me.id);
         }
 
-        setSelectedChat((prev)=>(prev=currentChat || prev ));
+        
+        
+
+        let currentDate = new Date();
+
+        if(receiver.id!=auth.me.id){
+            receiverChat?.messages.push({readed:false, from:auth.me , body:message, date:currentDate});
+        }
+
+        currentChat?.messages.push({readed:true, from:auth.me, body:message, date:currentDate});
+
+        // setSelectedChat((prev)=>(prev=currentChat || prev ));
         sort();
-        setRefresh((p)=>(p=!p));
+    
+        dispatch({type:ActionType.SETCHATS, chats: auth.me.chats});
+        // sort();
+        // setRefresh((p)=>(p=!p));
     }
 }

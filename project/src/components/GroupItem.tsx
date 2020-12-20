@@ -1,11 +1,13 @@
-import React, { ReactElement, useContext, useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState, } from 'react'
 import { Link, Route, useRouteMatch } from 'react-router-dom'
-import { CurrentUser } from '../App';
-import { Group, Post } from '../local/interfaces';
-import { groups } from '../local/localdb';
+import { Group, groupPost, groupUser, Post, User } from '../local/interfaces';
+import { auth, groups, users } from '../local/localdb';
 import PostCreate from './PostCreate';
 import style from './css/group.module.css'
 import groupImg from '../images/group.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { ActionType } from '../local/actionType';
+import { followGroup, getGroupById, createPost, unfollowGroup, getGroupUsers, getGroupPosts } from '../api/api';
 
 interface Props {
     
@@ -13,23 +15,37 @@ interface Props {
 
 export default function GroupItem({}: Props): ReactElement {
     let match = useRouteMatch<{id: string}>();
-    const [currentGroup, setCurrentGroup ] = useState<Group>({
-        id:"", 
-        name:"",
-        admin: {id:"", name:"", email:"", password:""},
-        posts:[],
-        users:[]
-    });
-    const user = useContext(CurrentUser);
-    const [subscribed, setSubscribed] = useState(false);
+    const currentGroup:Group = useSelector((state:any)=>state.groupReducer.selectedGroup.group);
+    const subscribed = useSelector((state:any)=> state.groupReducer.selectedGroup.followed);
+    const authUser:User = useSelector((state:any)=>state.authReducer.user );
+    const dispatch = useDispatch();
+    const [disable, setDisable] = useState(false);
     
     useEffect(() => {
-        const matchGroup = groups.find((group)=>group.id===match.params.id); 
-        setCurrentGroup((prev)=>(prev=matchGroup|| prev));
-        const findUser = matchGroup?.users.find((u)=>u.id===user.id);
-        findUser?setSubscribed((prev)=>(prev=true)): setSubscribed((prev)=>(prev=false));
+        // setCurrentGroup((prev)=>(prev=matchGroup|| prev));
+        async function getDatas(){
+            const matchGroup:Group = await getGroupById(match.params.id);
+            dispatch({type: ActionType.SELECTGROUP, group: matchGroup });
+            
+            const groupUsers:groupUser[] = await getGroupUsers(matchGroup.id);
+            const findUser = groupUsers.find((u)=>u.userId===authUser.id);
+            findUser?dispatch({type:ActionType.TOGGLEFOLLOWEDGROUP, followed:true})
+            : dispatch({type:ActionType.TOGGLEFOLLOWEDGROUP, followed:false});
+            groupUsers.forEach((groupUser)=>{
+                matchGroup.users.push(users[parseInt(groupUser.userId)-1]);
+            });
+
+            const groupPosts:groupPost[] = await getGroupPosts(matchGroup.id);
+            groupPosts.forEach((groupPost)=>{
+                matchGroup.posts.push(groupPost.post);
+            });
+            dispatch({type: ActionType.SELECTGROUP, group: matchGroup });
+        }
+
+        getDatas();
     }, [] )
 
+    if(currentGroup.id){}
     return (
         <div className={style.main} >
             <div className={style.left}>
@@ -40,8 +56,8 @@ export default function GroupItem({}: Props): ReactElement {
                     </div>
                     <div className={style.info_box}>
                         <div className={style.info} >ID: <span className={style.info_value}>{currentGroup.id}</span> </div>
-                        <div className={style.info} >Admin: <span className={style.info_value}>{currentGroup.admin.name}</span> </div>
-                        <div className={style.info} >Group Users  <span className={style.info_value}>{currentGroup.users.length}</span> </div>
+                        <div className={style.info} >Admin: <span className={style.info_value}>{currentGroup.admin?.name}</span> </div>
+                        <div className={style.info} >Group Users  <span className={style.info_value}>{currentGroup.users?.length}</span> </div>
                     </div>
                 </div>
             </div>
@@ -49,28 +65,26 @@ export default function GroupItem({}: Props): ReactElement {
             <div className={style.right}>
                 <div className={style.posts_header}>
                     <div className={style.posts_nuber}>
-                        Number of posts:{currentGroup.posts.length}
+                        Number of posts:{currentGroup.posts?.length}
                     </div>
-                    {currentGroup.admin===user ?
+                    {currentGroup.admin?.id===authUser.id ?
                     <Link className={style.create_btn} to={`${match.url}/createPost`} >Create Post </Link>
                     :
                     <>
                         {subscribed?
-                        <button className={style.unsubscribe} onClick={()=>toggleSubscribe()} >Unsubscribe</button>
+                        <button disabled={disable} className={`${style.unsubscribe} ${disable && style.disable}`} onClick={()=>toggleSubscribe()} >Unsubscribe</button>
                         :
-                        <button className={style.subscribe} onClick={()=>toggleSubscribe()} >Subscribe</button>}
+                        <button disabled={disable} className={`${style.subscribe} ${disable && style.disable}`} onClick={()=>toggleSubscribe()} >Subscribe</button>}
                     </>
                     }
                 </div>
-                {currentGroup.posts.length>0 ?
+                {currentGroup.posts?.length>0 ?
                 <div className={style.posts}>
                         {currentGroup.posts.map((post)=>(
-                            <div>
-                                {post.body.map((line)=>( 
-                                <div className={style.post_item}> 
-                                    {line} <br/> 
-                                </div> 
-                                ) ) }
+                            <div className={style.post_item} >
+                                <pre>
+                                    {post.body}
+                                </pre>
                             </div>
                         ) ) }
                 </div>
@@ -88,32 +102,26 @@ export default function GroupItem({}: Props): ReactElement {
         </div>
     )
 
-    function toggleSubscribe(){
+    async function toggleSubscribe(){
+        const groupUser:groupUser = {id:"", groupId:currentGroup.id, userId: authUser.id};
+        setDisable((p)=>p=true);
         if(subscribed){
-            user.groups = user.groups?.filter(group=>group!=currentGroup);
-            const updGroupUsers = currentGroup.users.filter( u=>u!=user );
-            const updGroup:Group = currentGroup;
-            updGroup.users = updGroupUsers;
-            setCurrentGroup((prev)=>(prev=updGroup));
-
+            await unfollowGroup(groupUser);
+            auth.me.groups = auth.me.groups?.filter((group)=>group.id!=currentGroup.id);
         }else{
-            user.groups?.push(currentGroup);
-            currentGroup.users.push(user);
+            await followGroup(groupUser);
+            auth.me.groups?.push(currentGroup);
         }
-
-        setSubscribed((prev)=>(prev=!prev));
+        setDisable((p)=>p=false);
+        dispatch({type:ActionType.TOGGLEFOLLOWEDGROUP, followed: !subscribed});
     }
 
-    function addPost(post:Post){
+    async function addPost(post:Post){
+        post.body.trim();
         if(post.body.length>0){
-            post.body.forEach((line)=>{line = line.trim()});
-            post.body = post.body.filter((line )=>line!=='');
-        
-            if(post.body.length===0){
-                return;
-            }
-
-            currentGroup.posts.push(post);
+            const groupPost: groupPost = {id:"", groupId:currentGroup.id, post };
+            await createPost(groupPost);
+            dispatch({type:ActionType.ADDPOST, post});
         }
     }
 }

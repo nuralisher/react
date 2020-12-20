@@ -36,10 +36,11 @@
     width:280px;
     height:190px;
     transition: all linear .1s;
+    border: 2px solid  transparent;
 }
 
 .group_item:hover{
-    border: 2px solid  var(--back-blue);
+    border-color: var(--back-blue);
     width:278px;
     height:188px;
 }

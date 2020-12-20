@@ -3,10 +3,21 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { createStore } from 'redux';
+import userReducer from './redux/userReducer';
+import { ActionType } from './local/actionType';
+import { Provider } from 'react-redux';
+import store from './redux/store';
+
+
+// store.subscribe(()=> console.log(store.getState()));
+// store.dispatch({type:ActionType.ADDUSER});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

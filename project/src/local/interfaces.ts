@@ -28,5 +28,17 @@ export interface Group{
 }
 
 export interface Post{
-    body:string[],
+    body:string,
+}
+
+export interface groupPost{
+    id: string,
+    groupId: string,
+    post: Post,
+}
+
+export interface groupUser{
+    id:string,
+    groupId: string,
+    userId: string,
 }

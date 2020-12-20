@@ -35,7 +35,7 @@ export default function MemoExample(): ReactElement {
     for (let i = 0; i <= 1000000000; i++) {}
     const random = Math.random();
     console.log(random);
-    if(random>0){
+    if(random>0.6){
       throw new Error('Oh no, something went wrong!');
     }
     return num * num;

@@ -28,8 +28,8 @@ export default function Registration({registrate, cancel, regUser}: Props): Reac
                     <input type="text" placeholder='Enter name' onChange={(e)=>{newUser.name=e.target.value}} />
                     <input type="password" placeholder='Enter password' onChange={(e)=>{newUser.password=e.target.value}} />
                     <div className={style.buttons}>
-                        <Link to='/login' onClick={()=>registrate(newUser)}><button className='btn btn-accept'>Sign up</button></Link>
-                        <Link to='/' onClick={()=>cancel()}><button className='btn btn-reject'>Cancel</button></Link>
+                        <Link to='/login' onClick={()=>registrate(newUser)}><button className={`${style.btn} ${style.btn_accept}`} >Sign up</button></Link>
+                        <Link to='/' onClick={()=>cancel()}><button className={`${style.btn} ${style.btn_reject}`} >Cancel</button></Link>
                     </div>
                 </form>
             </div>

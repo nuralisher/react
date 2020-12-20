@@ -1,5 +1,8 @@
 import {Group, User} from './interfaces'
 
+export let auth:{me:User} = {
+    me: {id:"", name:"", email:"", password:""},
+};
 
 export let users:User[] = [
     {

@@ -23,24 +23,24 @@ export default function Auth({login, cancel, regUser, authUser}: Props): ReactEl
 
     return (
         <>
-        {regUser!=ValidationStatus.NOTVALID?
+        {regUser===ValidationStatus.NOTVALID?
+            <div>
+                <Redirect to='/registration'/>
+            </div>
+            :
             <div className={style.back}>
-                <div className={style.box}>
+                <form className={style.box}>
                         <h2>Log in</h2>
                         {authUser===ValidationStatus.NOTVALID && <div className={style.warning}>Try Again</div>}
                         <div className={style.form}>
                             <input type="email" ref={email} placeholder='Enter email' onChange={(e)=>{user.email=e.target.value}}/>
                             <input type="password" placeholder='Enter password' onChange={(e)=>{user.password=e.target.value}}/>
                             <div className={style.buttons}>
-                                <Link to={`/profile`} ><button onClick={()=>login(user)} className='btn btn-accept'>Log in</button></Link>
-                                <Link to='/'><button onClick={()=>cancel()} className='btn btn-reject'>Cancel</button></Link>
+                                <Link to='/profile' ><button type="submit" onClick={()=>login(user)} className={`${style.btn} ${style.btn_accept}`} >Log in</button></Link>
+                                <Link to='/'><button onClick={()=>cancel()} className={`${style.btn} ${style.btn_reject}`} >Cancel</button></Link>
                             </div>
                         </div>
-                </div>
-            </div>
-            :
-            <div>
-                <Redirect to='/registration'/>
+                </form>
             </div>
             }
         </>

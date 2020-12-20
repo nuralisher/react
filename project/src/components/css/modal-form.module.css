@@ -72,3 +72,44 @@
     font-weight: bold;
     margin-bottom: .5em;
 }
+
+
+.btn{
+    cursor: pointer;
+    border: 0;
+    color: white;
+    padding: .8em;
+    font-size: 1rem;
+    border-radius: .5em;
+  }
+  
+  .btn:focus{
+    outline: 0;
+  }
+  
+  .btn_accept{
+    background-color: rgb(243, 236, 236);
+    box-shadow: 0 .4em rgb(158, 152, 152);
+    text-shadow: 1px 1px var(--back-blue);
+    color: var(--back-blue);
+  }
+  
+  .btn_accept:active{
+    background-color: rgb(231, 223, 223);
+    transform: translateY(.1em);
+    box-shadow: 0 .3em rgb(121, 116, 116);
+  }
+  
+  .btn_reject{
+    background-color: var(--open-blue);
+    color: white;
+    box-shadow: 0 .4em var(--back-blue);
+    text-shadow: 1px 1px  var(--open-blue);
+  }
+  
+  .btn_reject:active{
+    background-color:  #2d4b80;
+    transform: translateY(.1em);
+    box-shadow: 0 .3em  #353f50;
+  }
+  

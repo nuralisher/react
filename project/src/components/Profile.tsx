@@ -4,13 +4,18 @@ import {CurrentUser} from '../App';
 import style from './css/profile.module.css';
 import userImg from '../images/user.svg'
 import editImg from '../images/edit.svg'
+import { useDispatch, useSelector } from 'react-redux';
+import { auth } from '../local/localdb';
+import { ActionType } from '../local/actionType';
+import { ValidationStatus } from '../local/validationStatus';
 
 interface Props {
-
+    authUser: ValidationStatus,
 }
 
-export default function Profile({}: Props): ReactElement {
-    const curUser = useContext(CurrentUser);
+export default function Profile({authUser,}: Props): ReactElement {
+    // const curUser = useContext(CurrentUser);
+    const curUser = useSelector((state:any)=> state.authReducer.user);
     const [isChanging, setIsChanging] = useState(false);
     const [valid, setValid] = useState(true);
     const [isTrue, setIsTrue] = useState(true);
@@ -18,6 +23,7 @@ export default function Profile({}: Props): ReactElement {
     const newPassInput = useRef<HTMLInputElement>(null);
     let oldPass = "";
     let newPass = "";
+    const dispatch = useDispatch()
 
     useEffect(() => {
         passInput.current?.focus();
@@ -31,15 +37,20 @@ export default function Profile({}: Props): ReactElement {
         <div className={style.header}>
             <div>Profile</div>
         </div>
-            {curUser.id?
+            {authUser === ValidationStatus.NOTVALID?
+            
+            <>
+                <Redirect to='/login'/>
+            </>
+            :
             <div className={style.box}>
                 <div className={style.box_inner} >
                     <div className={style.info} >ID: <span className={style.info_value}>{curUser.id}</span></div>
                     <div className={style.info} >Name: <span className={style.info_value}>{curUser.name}</span></div>
                     <div className={style.info}>Email: <span className={style.info_value}>{curUser.email}</span></div>
-                    <div className={style.info} >
+                    {/* <div className={style.info} >
                         Number of subscribed groups: <span className={style.info_value}>{curUser.groups?.length}</span>
-                    </div>
+                    </div> */}
                     <div>
                         {!isChanging && <button className={style.change} onClick={()=>displayChange()}> Change Password </button>}
                         {isChanging && 
@@ -64,10 +75,6 @@ export default function Profile({}: Props): ReactElement {
                 </div>
                 <div><img className={style.img} src={userImg}/></div>
             </div>
-            :
-            <>
-                <Redirect to='/login'/>
-            </>
             }
         </div>
     )
@@ -96,7 +103,10 @@ export default function Profile({}: Props): ReactElement {
             return
         }
 
-        curUser.password = newPass;
+        // curUser.password = newPass;
+        auth.me.password = newPass;
+        dispatch({type:ActionType.CHANGEPASSWORD, password: newPass});
+
         cancel();
     }
 }

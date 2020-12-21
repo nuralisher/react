@@ -1,7 +1,6 @@
-import React, { ReactElement, useEffect, useRef, useState } from 'react'
+import React, { ReactElement, useEffect, useRef,  } from 'react'
 import { Link, Redirect, useRouteMatch } from 'react-router-dom'
 import { User } from '../local/interfaces';
-import { users } from '../local/localdb';
 import { ValidationStatus } from '../local/validationStatus';
 import style from './css/modal-form.module.css'
 
@@ -15,7 +14,6 @@ interface Props {
 export default function Auth({login, cancel, regUser, authUser}: Props): ReactElement {
     const email = useRef<HTMLInputElement>(null);
     let user:User = {id:"", name:"", email:"",password:""};
-    let match = useRouteMatch();
 
     useEffect(() => {
         email.current?.focus();

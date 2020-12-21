@@ -9,5 +9,5 @@ export default function Hero({ heroName }: Props): ReactElement {
     throw new Error("He is not a Hero");
   }
 
-  return <span>{heroName}</span>
+  return <span>{heroName}</span>;
 }

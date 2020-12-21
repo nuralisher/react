@@ -15,7 +15,7 @@
 
 .header{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     padding: 1em .5em;
     border-bottom: 1px solid var(--open-blue);
@@ -93,7 +93,7 @@
 
 .header2{
     display: flex;
-    justify-content: start;
+    justify-content: space-between;
     align-items: center;
     padding: 1em 2em;
     border-bottom: 1px solid var(--open-blue);
@@ -156,5 +156,13 @@
 
 .body{
     padding-bottom: .3em;
+    font-size: 1.1rem;
+}
+
+.white{
+
+}
+
+.dark  *{
     font-size: 1.1rem;
 }

@@ -1,6 +1,5 @@
 import React, { ReactElement, useContext, useEffect, useState } from 'react'
 import { Link, useRouteMatch } from 'react-router-dom';
-import { CurrentUser } from '../App';
 import { Group } from '../local/interfaces'
 import { auth } from '../local/localdb';
 import style from './css/groups.module.css'
@@ -8,14 +7,13 @@ import groupImg from '../images/group.svg'
 import { useDispatch, useSelector } from 'react-redux';
 import { ActionType } from '../local/actionType';
 import { getGroups } from '../api/api';
+import Fragment from './Fragment';
 
 interface Props {
     
 }
 
 export default function SubscibedGroups({}: Props): ReactElement {
-    // const [subscribedGroups, setSubscribedGroups] = useState<Group[]>([]);
-    // const [myGroups, setMyGroups] = useState<Group[]>([]);
     const subscribedGroups:Group[] = useSelector((state:any)=> state.groupReducer.subscribedGroups);
     const myGroups:Group[] = useSelector((state:any)=> state.groupReducer.myGroups);
     const dispatch = useDispatch();
@@ -41,9 +39,7 @@ export default function SubscibedGroups({}: Props): ReactElement {
                     <div className={style.box} >
                         {subscribedGroups.map((group)=>(
                             <Link className={style.group_item}  to={`/groups/${group.id}`} > 
-                                <div><img className={style.group_image} src={groupImg}/></div>
-                                <div className={style.name}>{group.name}</div>
-                                <div className={style.users}>{group.admin.email}</div>
+                                <Fragment name={group.name} description={group.admin.email} />
                             </Link>
                         ))}
                     </div>

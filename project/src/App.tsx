@@ -1,64 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Redirect, Route, Switch, useRouteMatch,} from 'react-router-dom';
-import Main from './components/Main';
-import Registration from './components/Registration';
-import Auth from './components/Auth';
+import React, { Suspense, useState } from 'react';
+import { BrowserRouter, Redirect, Route, Switch,} from 'react-router-dom';
 import { Group, User } from './local/interfaces';
-import { auth, groups, users } from './local/localdb';
-import Profile from './components/Profile';
-import { ValidationStatus } from './local/validationStatus';
-import Sidebar from './components/Sidebar';
-import Chats from './components/Chats';
-import Users from './components/Users';
-import Groups from './components/Groups';
-import GroupCreate from './components/GroupCreate';
-import GroupItem from './components/GroupItem';
-import SubscibedGroups from './components/SubscibedGroups';
+import { auth, users } from './local/localdb';
 import { useDispatch, useSelector } from 'react-redux';
 import { ActionType } from './local/actionType';
 import style from './components/css/app.module.css';
 import { addGroup} from './api/api';
 import Axios from 'axios';
+import Loading from './components/Loading';
+import { ValidationStatus } from './local/validationStatus';
+import ErrorBoundary from './components/ErrorBoundary';
 
-/*
-1.css modules: app.css and index.css
-2.react lazy-> imports,routing
-3.useMemo
-4.ErrorBoudary -> no user,no group..
-5.Fragments
-6.Profile
-7.useCallback
-8.useReducer
-9.Redux
-10.axios
-npx json-server --watch db.json
+const Profile = React.lazy(()=>import('./components/Profile'));
+const Auth = React.lazy(()=>import('./components/Auth'));
+const Main = React.lazy(()=>import('./components/Main'));
+const Sidebar = React.lazy(()=>import('./components/Sidebar'));
+const Chats = React.lazy(()=>import('./components/Chats'));
+const Users = React.lazy(()=>import('./components/Users'));
+const Groups = React.lazy(()=>import('./components/Groups'));
+const GroupItem = React.lazy(()=>import('./components/GroupItem'));
+const SubscibedGroups = React.lazy(()=>import('./components/SubscibedGroups'));
+const Registration = React.lazy(()=>import('./components/Registration'));
+const GroupCreate = React.lazy(()=>import('./components/GroupCreate'));
 
-->profile, 
-
- */
-
-
-export const CurrentUser = React.createContext<User>({
-  id:"", name:"", email:"",password:""
-});
-
+// npx json-server --watch db.json
 
 function App() {
   Axios.post("")
-  // const [isLogged, setisLogged] = useState(false);
   const [authUser, setauthUser] = useState(ValidationStatus.UNDEFINED);
   const [regUser, setregUser] = useState(ValidationStatus.UNDEFINED);
-  // const [curUser, setcurUser] = useState({id:"", name:"", email:"",password:""});
   const [createdId, setCreatedId] = useState("initial");
-  // const reduxUsers:User[] = useSelector((state:any) => state.userReducer.users);
-  // const curentUser:User = useSelector((state:any)=> state.userReducer.currentUser);
   const isAuth:User = useSelector((state:any)=> state.authReducer.isAuth );
-  const currentUser:User = useSelector((state:any)=> state.authReducer.user);
   const dispatch = useDispatch();
-  let reidrect = true;
   
   return (
     <BrowserRouter>
+    <Suspense fallback={<Loading/> }>
       {!isAuth ?
 
       <>
@@ -69,11 +46,11 @@ function App() {
         <Route  path='/profile' component={()=> <Profile authUser={authUser} />} />
       </Switch></>
       :
-      <CurrentUser.Provider value={{ id:"", name:"", email:"",password:""}}>
+      <>
         <Sidebar logout={logout} />
         <div className={style.main} >
           <Switch>
-            <Route path='/profile' component={()=><Profile authUser={authUser} /> }/>
+            <Route path='/profile' component={()=>  <Profile authUser={authUser} /> }/>
             <Route path='/chats' component={Chats}/>
             <Route path='/users' component={Users} />
             <Route exact path='/groups' component={Groups} />
@@ -85,7 +62,7 @@ function App() {
             <Route path='/groups/:id' component={GroupItem} />
           </Switch>
         </div>
-      </CurrentUser.Provider>
+      </>
 
       
       }
@@ -97,7 +74,7 @@ function App() {
             :
             <Redirect to={`/groups/${createdId}`} />
       )}
-
+</Suspense>
     </BrowserRouter>
   );
   
@@ -111,7 +88,7 @@ function App() {
     if(isValid(newUser)){
       const isExist = users.find((user)=>user.email===newUser.email);
       
-      if(!isExist){
+      if(isExist){
         setregUser((prev)=>(prev=ValidationStatus.NOTVALID));
         return
       }
@@ -119,7 +96,7 @@ function App() {
       newUser.id = (users.length+1).toString();
       newUser.chats = [];
       newUser.groups = [];
-      users.push(newUser);  
+      users.push(newUser);
       setregUser((prev)=>(prev=ValidationStatus.VALID));
       return
     }
@@ -153,10 +130,7 @@ function App() {
   
 
   function logout(){
-    // setisLogged((prev)=>(prev=false));
     setauthUser((prev)=>(prev=ValidationStatus.UNDEFINED));
-    // setcurUser((prev)=>(prev={id:"", name:"", email:"",password:""}));
-    // dispatch({type:ActionType.SETCURRENTUSER, user:{id:"", name:"", email:"",password:""}, });
     auth.me = {id:"", name:"", email:"", password:""};
     dispatch({type:ActionType.LOGOUT});
     setregUser((prev)=>(prev=ValidationStatus.UNDEFINED));

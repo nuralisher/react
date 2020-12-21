@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useState, } from 'react'
 import { Link, Route, useRouteMatch } from 'react-router-dom'
 import { Group, groupPost, groupUser, Post, User } from '../local/interfaces';
-import { auth, groups, users } from '../local/localdb';
+import { auth, users } from '../local/localdb';
 import PostCreate from './PostCreate';
 import style from './css/group.module.css'
 import groupImg from '../images/group.svg';
@@ -22,7 +22,6 @@ export default function GroupItem({}: Props): ReactElement {
     const [disable, setDisable] = useState(false);
     
     useEffect(() => {
-        // setCurrentGroup((prev)=>(prev=matchGroup|| prev));
         async function getDatas(){
             const matchGroup:Group = await getGroupById(match.params.id);
             dispatch({type: ActionType.SELECTGROUP, group: matchGroup });

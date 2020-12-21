@@ -22,7 +22,3 @@ export let users:User[] = [
         groups:[],
     }
 ]
-
-export let groups:Group[] = [
-    
-]

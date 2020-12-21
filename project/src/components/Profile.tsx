@@ -1,20 +1,19 @@
-import React, { ReactElement, useContext, useEffect, useRef, useState,} from 'react'
+import React, { ReactElement, useCallback, useContext, useEffect, useRef, useState,} from 'react'
 import { Redirect,  } from 'react-router-dom'
-import {CurrentUser} from '../App';
 import style from './css/profile.module.css';
 import userImg from '../images/user.svg'
-import editImg from '../images/edit.svg'
+import editImg from '../images/group.svg'
 import { useDispatch, useSelector } from 'react-redux';
 import { auth } from '../local/localdb';
 import { ActionType } from '../local/actionType';
 import { ValidationStatus } from '../local/validationStatus';
+import ProfileImage from './ProfileImage';
 
 interface Props {
     authUser: ValidationStatus,
 }
 
 export default function Profile({authUser,}: Props): ReactElement {
-    // const curUser = useContext(CurrentUser);
     const curUser = useSelector((state:any)=> state.authReducer.user);
     const [isChanging, setIsChanging] = useState(false);
     const [valid, setValid] = useState(true);
@@ -23,7 +22,13 @@ export default function Profile({authUser,}: Props): ReactElement {
     const newPassInput = useRef<HTMLInputElement>(null);
     let oldPass = "";
     let newPass = "";
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const [image, setImage] = useState(false);
+
+    const getImage = useCallback(()=>{
+        if(image){return userImg}
+        else {return editImg}
+    }, [image]);
 
     useEffect(() => {
         passInput.current?.focus();
@@ -73,7 +78,10 @@ export default function Profile({authUser,}: Props): ReactElement {
                         }
                     </div>
                 </div>
-                <div><img className={style.img} src={userImg}/></div>
+                <div> 
+                    <ProfileImage getImage={getImage} />
+                    <div><button onClick={()=>setImage((p)=>!p)} >Change image</button></div>
+                </div>
             </div>
             }
         </div>

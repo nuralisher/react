@@ -7,6 +7,7 @@ import groupImg from '../images/group.svg'
 import { useDispatch, useSelector } from 'react-redux'
 import { ActionType } from '../local/actionType'
 import { getGroups } from '../api/api'
+import Fragment from './Fragment'
 
 interface Props {
 }
@@ -35,9 +36,7 @@ function Groups({}: Props): ReactElement {
                 <div className={style.box} >
                     {groupList.map((group)=>(
                         <Link className={style.group_item} to={`${match.url}/${group.id}`} >
-                            <div><img className={style.group_image} src={groupImg}/></div>
-                            <div className={style.name}>{group.name}</div>
-                            <div className={style.users}>{group.admin.email} </div>
+                            <Fragment name={group.name} description={group.admin.email} />
                         </Link>
                     ))}
                 </div>

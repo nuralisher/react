@@ -1,29 +1,24 @@
-import React, { ReactElement, useContext, useEffect, useState } from 'react'
+import React, { Profiler, ReactElement, useEffect, useState,  } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { CurrentUser } from '../App'
 import { ActionType } from '../local/actionType'
 import { Chat, User } from '../local/interfaces'
-import { auth, users } from '../local/localdb'
+import { auth, users, } from '../local/localdb'
 import ChatItem from './ChatItem'
 import style from './css/chat.module.css'
+import ErrorBoundary from './ErrorBoundary'
 
 interface Props {
 
 }
 
 export default function Chats({}: Props): ReactElement {
-    // const [chats, setChats] = useState<Chat[]>([]);
-    // const [selectedChat, setSelectedChat] = useState<Chat>({with:defaultUser, messages:[]});
     const rchats:Chat[] = useSelector((state:any)=>state.chatsReducer.chats);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        // let check = user.chats? user.chats : [];
-        // setChats((prev)=>(prev=check));
-        
         sort();
         dispatch({type:ActionType.SETCHATS, chats: auth.me?.chats});
-        dispatch({type:ActionType.SELECTCHAT, chat: null});
+        dispatch({type:ActionType.SELECTCHAT, chat:  {with: null, messages:[]}});
     }, [])
 
 
@@ -66,27 +61,42 @@ export default function Chats({}: Props): ReactElement {
                 }
             </div>
             <div className={style.right} >
-            <ChatItem send={sendMessage}/>
+                <ErrorBoundary>
+                    <Profiler id="ChatItem" onRender={profileCallback} >
+                        <ChatItem send={sendMessage}/>
+                    </Profiler>
+                </ErrorBoundary>
             </div>
         </div>
     )
 
+    function profileCallback(
+        id:string,
+        phase:"mount"|"update",
+        actualDuration:number,
+        baseDuration: number,
+        startTime: number ,
+        commitTime: number,
+    ){
+        console.log("PROFILER INFOS: ID:" + id);
+        console.log("phase:" + phase);
+        console.log("actualDuration:" + actualDuration);
+        console.log("baseDuration:" + baseDuration);
+        console.log("startTime:" + startTime);
+        console.log("commitTime:" + commitTime);
+    }
+
     function openNewChat(){
-        // setSelectedChat((prev)=>(prev={with: defaultUser, messages:[]}));
-        dispatch({type:ActionType.SELECTCHAT, chat:null});
+        dispatch({type:ActionType.SELECTCHAT, chat: {with: null, messages:[]}});
     }
 
     function selectChat(chat:Chat){
-        // setSelectedChat((prev)=>(prev=chat));
         dispatch({type:ActionType.SELECTCHAT, chat});
-        // const findChat = chats.find((ch)=>ch.with===chat.with);
-        // findChat?.messages.forEach(ch=>ch.readed=true);
     }
 
-    function sendMessage(emailReceiver:string, message:string){
+    function sendMessage(receiver:User, message:string){
         message = message.trim();
-        let receiver = users.find((u)=>u.email===emailReceiver);
-        if((!receiver) ||  (!message)){
+        if((!message)){
             return
         }
         
@@ -117,11 +127,8 @@ export default function Chats({}: Props): ReactElement {
 
         currentChat?.messages.push({readed:true, from:auth.me, body:message, date:currentDate});
 
-        // setSelectedChat((prev)=>(prev=currentChat || prev ));
         sort();
     
         dispatch({type:ActionType.SETCHATS, chats: auth.me.chats});
-        // sort();
-        // setRefresh((p)=>(p=!p));
     }
 }
